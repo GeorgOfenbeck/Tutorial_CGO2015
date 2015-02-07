@@ -21,7 +21,7 @@ trait SPL_Base extends Base {
   def infix_compose(x: Rep[SPL], y: Rep[SPL]): Rep[SPL]
 }
 
-trait SPL_Exp extends SPL_Base with BaseExp {
+trait SPL_Exp extends SPL_Base with BaseExp with PureFunctionsExp{
   case class Tensor(x: Exp[SPL], y: Exp[SPL]) extends Def[SPL]
   case class Compose(x: Exp[SPL], y: Exp[SPL]) extends Def[SPL]
   def infix_tensor(x: Exp[SPL], y: Exp[SPL]) = Tensor(x, y)

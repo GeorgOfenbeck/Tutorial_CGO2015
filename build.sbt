@@ -16,4 +16,8 @@ libraryDependencies += "org.apache.commons" % "commons-math3" % "3.0"
 
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.12.1" % "test"
 
+libraryDependencies += "lms" % "lms_2.11" % "0.4.004"
+
+libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
+
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-Xlint")
