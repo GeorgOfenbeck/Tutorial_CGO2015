@@ -39,29 +39,13 @@ trait SPL_DSL2Scala extends PureDefaultTraversal {
           val f: Vector[MyComplex] => Vector[MyComplex] = (id2tp(a).rhs,id2tp(b).rhs) match {
             case (ConstDef(I(n)),_) => {
               sizeinfo = sizeinfo + (sym.id -> sizeinfo(b)*n)
-             (in: Vector[MyComplex]) => {
-              println("insize: "+in.size)
-              val o = in.grouped(sizeinfo(b)).flatMap( chunk => f_array(b)(chunk)).toVector
-              println("out size: "+o.size)
-              assert(in.size == o.size)
-              o
-              }
+             (in: Vector[MyComplex]) =>
+                in.grouped(sizeinfo(b)).flatMap( chunk => f_array(b)(chunk)).toVector
             }
             case (_,ConstDef(I(n))) => {
               sizeinfo = sizeinfo + (sym.id -> sizeinfo(a)*n)
               (in: Vector[MyComplex]) => {
-
-              println("insize: "+in.size + n)
-              val x = in.grouped(n).toList.transpose
-              val y = x.map( chunk => {
-                println(chunk.size)
-                f_array(a)(chunk.toVector)
-              })
-              val z1 = y.transpose
-              val z = z1.flatten
-              assert(in.size == z.size)
-              println("out size: "+z.size)
-              z.toVector
+                in.grouped(n).toList.transpose.map( chunk => f_array(a)(chunk.toVector)).transpose.flatten.toVector
               }
             }
             case _ => ??? //we dont support anyting else for this tutorial
@@ -73,12 +57,7 @@ trait SPL_DSL2Scala extends PureDefaultTraversal {
         case ConstDef(x: SPL) => {
           val f: Vector[MyComplex] => Vector[MyComplex] =
             x match{
-              case F_2() => (in: Vector[MyComplex]) => {
-                if (in.size != 2)
-                  println(" .")
-                  // assert(in.size == 2)
-                Vector(in(0)+in(1),in(0)-in(1))
-              }
+              case F_2() => (in: Vector[MyComplex]) => Vector(in(0)+in(1),in(0)-in(1))
               case I(n) => (in: Vector[MyComplex]) => in
               case _ => ??? //we dont support anyting else for this tutorial
           }

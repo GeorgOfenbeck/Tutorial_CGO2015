@@ -1,14 +1,39 @@
 package ch.ethz.spirals.cgo2015
 
+
+
+case class MyComplex(re: Double, im: Double){
+  def +(that: MyComplex) = MyComplex(this.re + that.re, this.im + that.im)
+  def -(that: MyComplex) = MyComplex(this.re - that.re, this.im - that.im)
+}
+
+
+
+
 import scala.virtualization.lms.common._
-
-
 trait StagedScala_Exp  extends NumericOpsExp with BaseExp with PureFunctionsExp{
 
   case class StagedComplex(re: Exp[Double], im: Exp[Double]){
     def +(that: StagedComplex) = StagedComplex(this.re + that.re, this.im + that.im)
     def -(that: StagedComplex) = StagedComplex(this.re - that.re, this.im - that.im)
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   import scala.reflect.runtime.universe._
   implicit def exposeRepFromStagedComplex[T](implicit tag: TypeTag[T]): ExposeRep[StagedComplex] = new ExposeRep[StagedComplex](){

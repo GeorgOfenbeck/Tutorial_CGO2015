@@ -41,30 +41,13 @@ trait SPL_DSL2MetaScala extends PureDefaultTraversal {
           val f: Vector[StagedComplex] => Vector[StagedComplex] = (id2tp(a).rhs,id2tp(b).rhs) match {
             case (ConstDef(I(n)),_) => {
               sizeinfo = sizeinfo + (sym.id -> sizeinfo(b)*n)
-             (in: Vector[StagedComplex]) => {
-              //println("insize: "+in.size)
-              val o = in.grouped(sizeinfo(b)).flatMap( chunk => f_array(b)(chunk)).toVector
-              //println("out size: "+o.size)
-              assert(in.size == o.size)
-              o
-              }
+             (in: Vector[StagedComplex]) =>
+               in.grouped(sizeinfo(b)).flatMap( chunk => f_array(b)(chunk)).toVector
             }
             case (_,ConstDef(I(n))) => {
               sizeinfo = sizeinfo + (sym.id -> sizeinfo(a)*n)
-              (in: Vector[StagedComplex]) => {
-
-              //println("insize: "+in.size + n)
-              val x = in.grouped(n).toList.transpose
-              val y = x.map( chunk => {
-                //println(chunk.size)
-                f_array(a)(chunk.toVector)
-              })
-              val z1 = y.transpose
-              val z = z1.flatten
-              assert(in.size == z.size)
-              //println("out size: "+z.size)
-              z.toVector
-              }
+              (in: Vector[StagedComplex]) =>
+                in.grouped(n).toList.transpose.map( chunk => f_array(a)(chunk.toVector)).transpose.flatten.toVector
             }
             case _ => ??? //we dont support anyting else for this tutorial
           }

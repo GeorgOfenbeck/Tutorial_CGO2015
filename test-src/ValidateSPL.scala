@@ -1,6 +1,7 @@
 
 package ch.ethz.spirals.cgo2015
 
+
 import org.scalacheck.Arbitrary._
 import org.scalacheck.Prop
 import org.scalacheck.Prop._
@@ -88,7 +89,8 @@ import org.scalatest.FunSpec
 class ViaFunSpec extends FunSpec {
   describe("Debug!") {
     val x = new CheckSPL2Matrix
-    forAll(BreakdownRules.genRandomWHTRuleTree) (x.checkMatrix)
-    //BreakdownRules.genRandomWHTRuleTree(8).sample.map ( t => x.checkMatrix(t))
-  }
+    val bd = BreakdownRules.genRandomWHTRuleTree.sample.get
+    x.checkMatrix(bd)
+    }
+
 }
